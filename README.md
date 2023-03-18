@@ -1,5 +1,5 @@
 # dxlAPRS Encrypted Sonde Telegram Notifier
-Sometimes encrypted radiosondes are launched, mainly by the military. Unfortunately, these probes do not reveal their position to the public, but at least the name, frame number and relative received field strength, as well as the frequency can be determined. Since version 1.37b sondemod can store this information in a file. With this Pyhton script you can send this file autonomously via Telegram from your receiver to your phone. The following steps explained how to get the script running.
+Sometimes encrypted radiosondes are launched, mainly by the military. Unfortunately, these probes do not reveal their position to the public, but at least the name, frame number and relative received field strength, as well as the frequency can be determined. Since version 1.37b sondemod can store this information in a file. With this Pyhton script you can send this file autonomously via Telegram from your receiver to your phone. If sondemod detects a new encrypted sonde it will create a file. This script checks every two minutes for such a file, if a file gets found it tries to sends the file via Telegram to the user. After sending the file it gets deleted and the script waits for teen minutes before checking again. The following steps explained how to get the script running.
 
 ### 1. Create a Telegram Bot
 1. Open Telegram and search for the "BotFather" bot
@@ -16,7 +16,7 @@ pip install pyTelegramBotAPI
 ```
 
 ### 3. Retrieve the Chat ID of the Bot
-After creating the bot you need to determine the chat ID of the bot. To get the ID you need to run the script get_chat_id.py. Before you run the script replace ```YOUR_API_TOKEN``` with the actuall bot token. Execute the following command in the directory where the script is stored to start the script.
+After creating the bot you need to determine the chat ID of the bot. To get the ID you need to run the script [get_chat_id.py](https://github.com/byte-me404/dxlAPRS-encrypted-sonde-telegram-notifier/blob/main/get_chat_id.py). Before you run this script replace [YOUR_API_TOKEN](https://github.com/byte-me404/dxlAPRS-encrypted-sonde-telegram-notifier/blob/b60042a5ca5eaa60721483d2d6598b60bd30f2bb/get_chat_id.py#L4) with the actual bot token. Execute the following command in the directory where the script is stored to start the script.
 ```
 python get_chat_id.py
 ```
@@ -29,14 +29,14 @@ sondemod -o 18000 -I BAUMI2-15 -r 127.0.0.1:9001 -b 10:5:3 -A 3000:2000:1000 -X 
 ```
 
 ### 5. Insert your API Token in the main Script
-Replace the placeholders with your API key and with your chat ID in the main script.
+Replace the placeholders with your [API token](https://github.com/byte-me404/dxlAPRS-encrypted-sonde-telegram-notifier/blob/b60042a5ca5eaa60721483d2d6598b60bd30f2bb/encrypted_telegram_notifier.py#L18) and with your [chat ID](https://github.com/byte-me404/dxlAPRS-encrypted-sonde-telegram-notifier/blob/b60042a5ca5eaa60721483d2d6598b60bd30f2bb/encrypted_telegram_notifier.py#L21) in the main script.
 ```
 bot = telebot.TeleBot("YOUR_API_KEY")
 chat_id = "YOUR_CHAT_ID"
 ```
 
 ### 6. Define the Filepath in the main Script
-Replace the filepath and filename in the main script to your parameters.
+Replace the [filepath](https://github.com/byte-me404/dxlAPRS-encrypted-sonde-telegram-notifier/blob/b60042a5ca5eaa60721483d2d6598b60bd30f2bb/encrypted_telegram_notifier.py#L24) and [filename](https://github.com/byte-me404/dxlAPRS-encrypted-sonde-telegram-notifier/blob/b60042a5ca5eaa60721483d2d6598b60bd30f2bb/encrypted_telegram_notifier.py#L26) in the main script to your parameters.
 ```
 directory_path  = "DIRECTORY_PATH"
 file_name = "FILE_NAME"
