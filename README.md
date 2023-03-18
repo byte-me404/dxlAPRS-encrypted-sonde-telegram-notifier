@@ -49,7 +49,7 @@ file_name = "encrypt.txt"
 ### 7. Start the Script
 To start the script execute the following command in the directory where the script is stored.
 ```
-python encrypted_telegram_watcher.py
+python encrypted_telegram_notifier.py
 ```
 
 ### 8. Test Everything
