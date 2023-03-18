@@ -1,1 +1,1 @@
-# dxlAPRS-encrypted-sonde-telegram-notifier
+# dxlAPRS Encrypted Sonde Telegram Notifier
