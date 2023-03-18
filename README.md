@@ -36,7 +36,7 @@ chat_id = "YOUR_CHAT_ID"
 ```
 
 ### 6. Define the Filepath in the main Script
-Replace the [filepath](https://github.com/byte-me404/dxlAPRS-encrypted-sonde-telegram-notifier/blob/b60042a5ca5eaa60721483d2d6598b60bd30f2bb/encrypted_telegram_notifier.py#L24) and [filename](https://github.com/byte-me404/dxlAPRS-encrypted-sonde-telegram-notifier/blob/b60042a5ca5eaa60721483d2d6598b60bd30f2bb/encrypted_telegram_notifier.py#L26) in the main script to your parameters.
+Replace the [filepath](https://github.com/byte-me404/dxlAPRS-encrypted-sonde-telegram-notifier/blob/b60042a5ca5eaa60721483d2d6598b60bd30f2bb/encrypted_telegram_notifier.py#L24) and [filename](https://github.com/byte-me404/dxlAPRS-encrypted-sonde-telegram-notifier/blob/b60042a5ca5eaa60721483d2d6598b60bd30f2bb/encrypted_telegram_notifier.py#L26) placeholders in the main script to your parameters.
 ```
 directory_path  = "DIRECTORY_PATH"
 file_name = "FILE_NAME"
