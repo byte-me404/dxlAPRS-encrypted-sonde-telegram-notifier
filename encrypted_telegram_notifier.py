@@ -20,7 +20,6 @@ def set_process_name(name):
 
 # Replace YOUR_API_TOKEN with your actual bot token
 bot = telebot.TeleBot("YOUR_API_TOKEN")
-
 # Replace YOUR_CHAT_ID with the actual chat ID
 chat_id = "YOUR_CHAT_ID"
 
@@ -31,6 +30,9 @@ file_name = "FILE_NAME"
 # Combine filename and path
 file_path = os.path.join(directory_path, file_name)
 
+# Dictionary which contains all sondes for which a message was already sent
+received_encr_sondes = {}
+
 if __name__ == "__main__":
     print(f"Started Encrypted Sonde Notifier!\n")
 
@@ -39,32 +41,65 @@ if __name__ == "__main__":
     
     while True:
         try:
-            # Check if a file exists
+            # Check if sondemod created a new file
             if os.path.exists(file_path):
-                print(f"\nFound a encrypted sonde file.")
-                # Open the file in binary mode
-                with open(file_path, 'rb') as file:
-                    # Get time information
-                    date_time = datetime.datetime.utcnow()
-                    _date = date_time.strftime("%Y-%m-%d")
-                    _time = date_time.strftime("%H:%M:%S")
-                    # Determining the caption of the chat message
-                    info = f"Received new encrypted Radionsonde!\n\nDate: {_date}\nTime: {_time} UTC"
-                    # Determining the filename visible in the chat
-                    _time = _time.replace(":", "-")
-                    filename = f"encrypted_{_date}_{_time}.txt"
-                    # Send the file to the chat using send_document
-                    sent_message = bot.send_document(chat_id, file, caption=info, visible_file_name=filename)
-                    # Check if the transmission was successful
-                    if type(sent_message) == telebot.types.Message:
-                        print(f"Succesfully sent file via Telegram.")
-                # Delete file after sending it
+                print("\nDetected new encrypted radiosonde!")
+                
+                # Open the file in read mode
+                with open(file_path, "r") as file:
+                    # Read the content of the file
+                    content = file.read()
+
+                # The content of the file looks like this: T1234567 403.500MHz
+                # It gets split into the SN and frequency
+                content = content.split(" ")
+                # Define variables for SN and frequency
+                serial = None
+                frequency = None
+                
+                if 1 <= len(content) <= 2:
+                    serial = content[0]
+                    # Check if the SN is valid, it needs to be 8 chars long and it needs to start with a single uppercase letter
+                    if len(serial) == 8 and serial[0].isupper():
+                        # The file only contains the frequency if it is enabled in sondemod
+                        # Also check if the frequency is valid
+                        if len(content) == 2 and content[1].endswith("MHz"):
+                            frequency = content[1]                                
+
+                        # Only notify the user if the sonde is new
+                        if serial not in received_encr_sondes.keys():
+                            received_encr_sondes[serial] = frequency
+
+                            # Get time information
+                            date_time = datetime.datetime.utcnow()
+                            _date = date_time.strftime("%Y-%m-%d")
+                            _time = date_time.strftime("%H:%M:%S")
+
+                            # Determining the content of the chat message
+                            if frequency is not None:
+                                info = f"Received new encrypted Radionsonde!\n\nSerial Number: {serial}\nDate: {_date}\nTime: {_time} UTC"
+                                print(f"Serial Number: {serial}\nDate: {_date}\nTime: {_time} UTC")
+                            else:
+                                info = f"Received new encrypted Radionsonde!\n\nSerial Number: {serial}\nFrequency: {frequency}\nDate: {_date}\nTime: {_time} UTC"
+                                print(f"Serial Number: {serial}\nFrequency: {frequency}\nDate: {_date}\nTime: {_time} UTC")
+                            
+                            # Notify the user via Telegram using send_message
+                            sent_message = bot.send_message(chat_id, text=info)
+
+                            # Check if the transmission was successful
+                            if type(sent_message) == telebot.types.Message:
+                                print(f"Succesfully notified user via Telegram.")
+                            else:
+                                print("Failed to notify the user via Telegram.")
+                    else:
+                        print("Failed to parse the SN.")
+                else:
+                    print("Failed to parse the SN.")
+
+                # Delete the file after reading it
                 os.remove(file_path)
-                # Wait for 10 minutes before sending a file again
-                time.sleep(600)
-            else:
-                # Wait for 180 second before checking again
-                time.sleep(180)
+            # Check for a new encrypted sonde every 30 seconds
+            time.sleep(30)
         except Exception:
             print("Something went wrong!")
-            time.sleep(180)
+            time.sleep(30)
