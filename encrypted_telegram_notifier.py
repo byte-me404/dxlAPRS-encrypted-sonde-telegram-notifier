@@ -1,3 +1,7 @@
+#
+# Copyright (C) Daniel Baumgartner 2023
+#
+
 import os
 import time
 import datetime
@@ -20,7 +24,7 @@ bot = telebot.TeleBot("YOUR_API_TOKEN")
 # Replace YOUR_CHAT_ID with the actual chat ID
 chat_id = "YOUR_CHAT_ID"
 
-# Replace DIRECTORY_PATH with the path where sondemod creates the file for a encrypetd sonde
+# Replace DIRECTORY_PATH with the path where sondemod creates the file for an encrypetd sonde
 directory_path  = "DIRECTORY_PATH"
 # Replace FILE_NAME with the name of the file which sondemod will create
 file_name = "FILE_NAME"
@@ -63,3 +67,4 @@ if __name__ == "__main__":
                 time.sleep(180)
         except Exception:
             print("Something went wrong!")
+            time.sleep(180)
