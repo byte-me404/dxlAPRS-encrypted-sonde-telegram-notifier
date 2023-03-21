@@ -1,5 +1,9 @@
 # dxlAPRS Encrypted Sonde Telegram Notifier
 Sometimes encrypted radiosondes (RS41-SGM) are launched, mainly by the military. Unfortunately, these probes do not reveal their position to the public, but at least the name, frame number and relative received field strength, as well as the frequency can be determined. Since version 1.37b sondemod creates an "alarm" file when one of these sondes gets decoded. This file gets created once on first reception, it contains the serial number and the frequency of the probe. With this Python script, you can send this file and/or it's content autonomously via Telegram from your receiver to your phone. After sending the file and the information to the user, the script deletes the file and waits for the next sonde. The following steps explain how to get the script running.
+Example of a received Telgram notification:
+<p align="center">
+  <img src="https://github.com/byte-me404/dxlAPRS-encrypted-sonde-telegram-notifier/blob/main/example_message.png" width="300" title="Example Telegram Message">
+</p>
 
 ### 1. Create a Telegram Bot
 1. Open Telegram and search for the "BotFather" bot
